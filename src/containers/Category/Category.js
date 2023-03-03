@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addCategory, getAllCategory } from '../../actions';
 import Layout from '../../components/Layout';
 import Input from '../../components/UI/Input/Input';
+import Modal from '../../components/UI/Modal/Modal';
 
 const Category = () => {
 
@@ -61,18 +62,18 @@ const Category = () => {
         setCategoryImage(e.target.files[0]);
     }
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const form = new FormData();
 
-        form.append('name',categoryName);
-        form.append('categoryImage',categoryImage);
-        form.append('parentId',parentCategoryId);
-        
+        form.append('name', categoryName);
+        form.append('categoryImage', categoryImage);
+        form.append('parentId', parentCategoryId);
+
         dispatch(addCategory(form))
 
-      
+
     }
 
     return (
@@ -81,7 +82,7 @@ const Category = () => {
                 <div>
                     <div className="flex justify-between">
                         <h3 className="text-3xl">Category</h3>
-                        <label htmlFor="my-modal-4" className="btn btn-sm rounded-none">Add</label>
+                        <label htmlFor="addCategory" className="btn btn-sm rounded-none">Add</label>
                     </div>
                 </div>
 
@@ -105,42 +106,43 @@ const Category = () => {
 
 
 
-            <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-            <label htmlFor="my-modal-4" className="modal cursor-pointer">
-                <label className="modal-box relative rounded-none" htmlFor="">
-                    <h3 className="text-2xl font-semibold">Add New Category</h3>
-                    <form onSubmit={handleSubmit}>
-                        <Input
-                            label="Category Name"
-                            value={categoryName}
-                            placeholder="Category Name"
-                            onChange={(e) => setCategoryName(e.target.value)}
+            <Modal
+                modalId="addCategory"
+                handleSubmit={handleSubmit}
+                modalTitle="Add New Category"
 
-                        />
+            >
+                <Input
+                    label="Category Name"
+                    value={categoryName}
+                    placeholder="Category Name"
+                    onChange={(e) => setCategoryName(e.target.value)}
 
-                        <select className="select select-bordered w-full rounded-none" value={parentCategoryId} onChange={(e) => setParentCategoryId(e.target.value)}>
-                            <option>Select Category</option>
-                            {
-                                createCategoryList(category.categories).map(option => (
-                                    <option key={option.value} value={option.value}>{option.name}</option>
-                                ))
-                            }
+                />
 
-                        </select>
+                <select
+                    className="select select-bordered w-full rounded-none"
+                    value={parentCategoryId}
+                    onChange={(e) => setParentCategoryId(e.target.value)}>
+                    <option>Select Category</option>
+                    
+                    {
+                        createCategoryList(category.categories).map(option => (
+                            <option key={option.value} value={option.value}>{option.name}</option>
+                        ))
+                    }
 
-                        <br />
-                        <Input
-                            type="file"
-                            label="Category Image"
-                            class="input w-full rounded-none -ml-3"
-                            onChange={handleCategoryImage}
-                        />
+                </select>
 
-                        <input type="submit" value="Save" className="btn btn-sm rounded-none" />
-                    </form>
+                <br />
+                <Input
+                    type="file"
+                    label="Category Image"
+                    class="input w-full rounded-none -ml-3"
+                    onChange={handleCategoryImage}
+                />
 
-                </label>
-            </label>
+            </Modal>
         </Layout>
     );
 };

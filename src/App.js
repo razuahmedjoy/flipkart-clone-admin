@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import { getAllCategory, isUserLoggedIn } from './actions';
+import { getInitialData } from './actions/initialData.action';
 import './App.css';
 import PrivateRoute from './components/HOC/PrivateRoute';
 import Layout from './components/Layout';
@@ -24,7 +25,7 @@ function App() {
       dispatch(isUserLoggedIn());
     }
 
-    dispatch(getAllCategory());
+    dispatch(getInitialData());
 
 
   }, [])
